@@ -1,0 +1,30 @@
+0008:0000000000008237
+
+(0) [0x00000000000028c9] 028b:0019 (unk. ctxt): hlt                       ; f4
+
+(0).[462461097] [0x00000000000c014a] c000:014a (unk. ctxt): pushf                     ; 9c
+vb 0xc000:0x014a
+
+(0) Caught mode switch breakpoint switching to 'v8086 mode'
+Next at t=113577330
+(0) [0x0000000000002c82] 028b:03d2 (unk. ctxt): add sp, 0x000c            ; 83c40c
+vb 0x28b:0x03d2
+
+
+Last instruction with an IOPL of 3
+eflags 0x00023202: id vip vif ac VM rf nt IOPL=3 of df IF tf sf zf af pf cf
+(0).[399998125] [0x0000000000001ff0] 00d8:1270 (unk. ctxt): iret                      ; cf
+vb 0xd8:0x1270
+
+
+AFTER THE CALL TO THE VISOR
+0x0000000000014b5a <bogus+       0>:	0x0000	0x044c	0x0200	0x0000	0x0000	0x0000
+00335370154i[XGUI ] Mouse capture off
+<bochs:15> 
+
+
+Next step in the puzzle ... now interrupt in V8086 mode
+(0) [0x000000000000e417] 0b22:31f7 (unk. ctxt): int 0x21                  ; cd21
+vb 0xb22:0x31f7
+
+

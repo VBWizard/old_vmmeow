@@ -1,0 +1,18 @@
+11	AVIC APIC_BAR; AVIC APIC_BACKING_PAGE, AVIC
+	PHYSICAL_TABLE and AVIC LOGICAL_TABLE Pointers
+AVIC
+10	LBR  DbgCtlMsr, br_from/to, lastint_from/to
+9	CR2  CR2
+8	SEG CS/DS/SS/ES Sel/Base/Limit/Attr, CPL
+DT
+7	GDT/IDT Limit and Base
+6	DRx  DR6, DR7
+5	CRx   CR0, CR3, CR4, EFER
+4	NP  Nested Paging: NCR3, PAT, Nested_Paging_En
+3	V_TPR, V_IRQ, V_INTR_PRIO, V_IGN_TPR, V_INTR_MASKING,
+	V_INTR_VECTOR (Offset 60h–67h)
+TPR
+2	ASID    ASID
+1	IOPM    IOMSRPM: IOPM_BASE, MSRPM_BASE
+I
+0	Intercepts: all the intercept vectors, TSC offset, Pause Filter Count

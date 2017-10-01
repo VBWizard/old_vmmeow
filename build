@@ -1,0 +1,73 @@
+#/bin/bash
+clear
+export srcdir=.
+export media=/home/yogi/src/media
+export final_hdimage=/dev/disk/by-id/usb-SanDisk_Cruzer_20042103311D97B0109A-0:0
+export hdimage=./diskimage.img
+export StartSector=3	#1536 or x0x600
+export VisorSector=15	#7680 or 0x1E00
+#export SourceImage=~/DOS622_hd.raw
+export SourceImage=/home/yogi/win98_hd.raw
+
+#cp $SourceImage ./diskimage.img
+echo Building to $hdimage
+if [ "$hdimage" = "" ]; then
+	echo "hdimage not exported, cannot continue, quitting"
+	exit 1
+fi
+echo Building bootloader
+gcc -DLEGACY -D__BOOT_FROM_HD__ -E -P bootloader.c > _bootloader.c
+bcc -o bootloader.s -C-c -D__BOOT_FROM_HD__ -0 -S _bootloader.c
+sed -e 's/^\.text//' -e 's/^\.data//' bootloader.s > _bootloader_.s
+as86 _bootloader_.s -b bootloader.bin -u- -w- -g -0 -j -O -l bootloader.lst
+perl ${srcdir}/makesym.perl < bootloader.lst > bootloader.map
+#Gotta keep it under 446 bytes or we overwrite the partition table (on a HD, not a FD)
+
+echo
+echo building start
+gcc -DLEGACY -D__BOOT_FROM_HD__ -E -P start.c > _start.c
+bcc -o start.s -C-c -D__BOOT_FROM_HD__  -0 -S _start.c
+sed -e 's/^\.text//' -e 's/^\.data//' start.s > _start_.s
+as86 -b start.bin -u- -w- -0 -j -O -l start.lst  _start_.s
+#as86 _start_.s -b start.bin -u- -w- -0 -j -O -l start.lst
+perl ${srcdir}/makesym.perl < start.lst > start.map
+
+echo
+echo building visor
+as --32 -a -ad -an -as -L -o isr_wrapper.o isr_wrapper.asm > isr_wrapper.lst 
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g visor.c -o visor.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g utility.c -o utility.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g pmode.c -o pmode.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g paging.c -o paging.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g guest.c -o guest.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g screen.c -o screen.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -Wall -masm=intel -c -g logging.c -o logging.o
+gcc -g -m32 -O0 -ffreestanding -D__BOOT_FROM_HD__ -D __GCC__ -masm=intel -c -g -Wa,-a,-ad,-an,-L -c visor.c utility.c pmode.c paging.c guest.c pmode.c screen.c logging.c  > visor.lst 2>/dev/null
+ld -Map=visor.map --cref -T visor.ld --oformat binary -o visor.bin visor.o utility.o paging.o guest.o isr_wrapper.o pmode.o screen.o logging.o
+
+echo $1
+
+#if [ "$1" = "-w" -o "$1" = "-u" ]; then
+#	echo Writing everything to $hdimage
+#	dd conv=notrunc,sync if=bootloader.bin of=$hdimage bs=446 count=1 
+#	dd conv=notrunc,sync if=start.bin of=$hdimage bs=512 seek=$StartSector
+#	dd conv=notrunc if=visor.bin of=$hdimage bs=512 seek=$VisorSector 
+#fi
+#if [ "$1" = "-u" ]; then
+#        echo Writing everything to $final_hdimage
+#        dd conv=notrunc,sync if=bootloader.bin of=$final_hdimage bs=446 count=1
+#        dd conv=notrunc,sync if=start.bin of=$final_hdimage bs=512 seek=$StartSector
+#        dd conv=notrunc if=visor.bin of=$final_hdimage bs=512 seek=$VisorSector
+#else
+	echo Not writing to $hdimage
+#fi
+
+echo Making a backup
+COPYDIR=`date +%Y%m%d_%H%M%S`
+mkdir ./backup/$COPYDIR
+cp * ./backup/$COPYDIR/
+
+rm -f ./backup/$COPYDIR/diskimage.img
+rm -f ./backup/$COPYDIR/bochsd.log
+rm -f ./backup/$COPYDIR/bochs.log
+

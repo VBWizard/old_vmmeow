@@ -1,0 +1,25 @@
+*** Host Information ***
+Host Memory Size: 0x15000000
+Guest offset in physical memory: 0x0
+Guest Memory Size: 0x3000000
+CodeBase: 0x3000000
+StackBase: 0x3000000
+VMCB: 0x3030000
+IOIO: 0x3031000
+Page Tables: 0x3034000
+IDT: 0x3089000
+GDT: 0x308a000
+Host Save Area: 0x3090000
+BIOS Save Area: 0x3094000
+VIDEO Save Area: 0x30b4000
+Nested CR3: 0x30c4000
+Boot Sector Save Area: 0x30de000
+E820 Data: 0x30de200
+Total Host Mem: 0xde600 (910848 bytes)
+
+
+
+
+ß
+
+

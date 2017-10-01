@@ -1,0 +1,1 @@
+everything works now, right up till the point that the guest code overwrites the host' GDT

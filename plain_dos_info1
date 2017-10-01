@@ -1,0 +1,92 @@
+Num Type           Disp Enb Address
+  1 vbreakpoint    keep y   0x0048:00000000000000ad
+  3 vbreakpoint    keep y   0x0048:00000000000030b0
+
+(0).[8953552230] [0x000000002f6a] 029b:05ba (unk. ctxt): mov ax, word ptr ds:0x08f4 ; a1f408
+(0).[8953552231] [0x000000002f6d] 029b:05bd (unk. ctxt): and word ptr ss:[bp+6], 0xfffe ; 836606fe
+(0).[8953552232] [0x000000002f71] 029b:05c1 (unk. ctxt): pop ds                    ; 1f
+(0).[8953552233] [0x000000002f72] 029b:05c2 (unk. ctxt): pop bp                    ; 5d
+(0).[8953552234] [0x000000002f73] 029b:05c3 (unk. ctxt): iret                      ; cf
+(0) Breakpoint 3, in 0ba8:0105 (0x0000bb85)
+Next at t=8953552235
+(0) [0x00000000bb85] 0ba8:0105 (unk. ctxt): int3                      ; cc
+<bochs:18> s
+(0).[8953552235] [0x00000000bb85] 0ba8:0105 (unk. ctxt): int3                      ; cc
+CPU 0: Interrupt 0x03 occured (error_code=0x0000)
+CPU 0: Exception 0x0d - (#GP) general protection fault occured (error_code=0x001a)
+CPU 0: Interrupt 0x0d occured (error_code=0x001a)
+Next at t=8953552236
+(0) [0x000000158658] 0048:0000000000000258 (unk. ctxt): push ebp                  ; 6655
+
+
+Interrupt Descriptor Table (base=0x0000000000162f80, limit=2047):
+IDT[0x00]=32-Bit Interrupt Gate target=0x0048:0x00000090, DPL=0
+IDT[0x01]=32-Bit Interrupt Gate target=0x0048:0x000000ad, DPL=0
+IDT[0x02]=32-Bit Interrupt Gate target=0x0048:0x000000d3, DPL=0
+IDT[0x03]=32-Bit Interrupt Gate target=0x0048:0x0000011f, DPL=0
+IDT[0x04]=32-Bit Interrupt Gate target=0x0048:0x00000134, DPL=0
+IDT[0x05]=32-Bit Interrupt Gate target=0x0048:0x00000149, DPL=0
+IDT[0x06]=32-Bit Interrupt Gate target=0x0048:0x00000166, DPL=0
+IDT[0x07]=32-Bit Interrupt Gate target=0x0048:0x00000184, DPL=0
+IDT[0x08]=32-Bit Interrupt Gate target=0x0048:0x000001b0, DPL=0
+IDT[0x09]=32-Bit Interrupt Gate target=0x0048:0x000001db, DPL=0
+IDT[0x0a]=32-Bit Interrupt Gate target=0x0048:0x00000216, DPL=0
+IDT[0x0b]=32-Bit Interrupt Gate target=0x0048:0x0000022c, DPL=0
+IDT[0x0c]=32-Bit Interrupt Gate target=0x0048:0x00000242, DPL=0
+IDT[0x0d]=32-Bit Interrupt Gate target=0x0048:0x00000258, DPL=0
+IDT[0x0e]=32-Bit Interrupt Gate target=0x0048:0x0000027a, DPL=0
+IDT[0x0f]=32-Bit Interrupt Gate target=0x0048:0x000002c0, DPL=0
+IDT[0x10]=32-Bit Interrupt Gate target=0x0048:0x000002eb, DPL=0
+IDT[0x11]=32-Bit Interrupt Gate target=0x0048:0x00000300, DPL=0
+IDT[0x12]=??? descriptor hi=0x00000000, lo=0x00000000
+IDT[0x13]=32-Bit Interrupt Gate target=0x0048:0x00001ec4, DPL=3
+IDT[0x14]=??? descriptor hi=0x00000000, lo=0x00000000
+IDT[0x15]=32-Bit Interrupt Gate target=0x0048:0x000030b0, DPL=3
+
+
+plain dos stack @ exception 0xd
+ | STACK 0x162ed8 [0x001a]
+ | STACK 0x162eda [0x0000]
+ | STACK 0x162edc [0x0105]
+ | STACK 0x162ede [0x0000]
+ | STACK 0x162ee0 [0x0ba8]
+ | STACK 0x162ee2 [0x0000]
+ | STACK 0x162ee4 [0x7202]
+ | STACK 0x162ee6 [0x0003]
+ | STACK 0x162ee8 [0xffee]
+ | STACK 0x162eea [0x0000]
+ | STACK 0x162eec [0x0ba8]
+ | STACK 0x162eee [0x0000]
+ | STACK 0x162ef0 [0x0ba8]
+ | STACK 0x162ef2 [0x0000]
+ | STACK 0x162ef4 [0x0ba8]
+ | STACK 0x162ef6 [0x0000]
+	NOTE the 105
+
+Next at t=5353289227
+(0) [0x00000015924a] 0048:0000000000000e4a (unk. ctxt): iret                      ; 66cf
+rax: 00000000_00040000 rcx: 00000000_00000000
+rdx: 00000000_00000000 rbx: 00000000_00000000
+rsp: 00000000_00000fdc rbp: 00000000_00000000
+rsi: 00000000_00120000 rdi: 00000000_00160000
+r8 : 00000000_00000000 r9 : 00000000_00000000
+r10: 00000000_00000000 r11: 00000000_00000000
+r12: 00000000_00000000 r13: 00000000_00000000
+r14: 00000000_00000000 r15: 00000000_00000000
+rip: 00000000_00000e4a
+eflags 0x00003006: id vip vif ac vm rf nt IOPL=3 of df if tf sf zf af PF cf
+<bochs:118> 
+Next at t=5353289228
+(0) [0x000000007471] 060c:13b1 (unk. ctxt): push bp                   ; 55
+rax: 00000000_00040000 rcx: 00000000_00000000
+rdx: 00000000_00000000 rbx: 00000000_00000000
+rsp: 00000000_0000ffe8 rbp: 00000000_00000000
+rsi: 00000000_00120000 rdi: 00000000_00160000
+r8 : 00000000_00000000 r9 : 00000000_00000000
+r10: 00000000_00000000 r11: 00000000_00000000
+r12: 00000000_00000000 r13: 00000000_00000000
+r14: 00000000_00000000 r15: 00000000_00000000
+rip: 00000000_000013b1
+eflags 0x00037002: id vip vif ac VM RF NT IOPL=3 of df if tf sf zf af pf cf
+0x0000000000000000 <bogus+       0>:	0x0116108a	0x060c13bb	0x04be0016	0x060c13b1
+

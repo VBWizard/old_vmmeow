@@ -1,0 +1,37 @@
+echo on
+export srcdir=.
+export media=/home/yogi/src/media
+
+echo Initializing
+cp $media/dosmoved/622clrm.img $media/622clr.img
+
+echo
+echo Building bootloader
+gcc -DLEGACY -E -P bootloader.c > _bootloader.c
+bcc -o bootloader.s -C-c -D__i86__ -0 -S _bootloader.c
+sed -e 's/^\.text//' -e 's/^\.data//' bootloader.s > _bootloader_.s
+as86 _bootloader_.s -b bootloader.bin -u- -w- -g -0 -j -O -l bootloader.lst
+perl ${srcdir}/makesym.perl < bootloader.lst > bootloader.map
+dd conv=notrunc,sync if=bootloader.bin of=$media/622clr.img bs=512 count=1 
+
+echo
+echo building start
+gcc -DLEGACY -E -P start.c > _start.c
+bcc -o start.s -C-c -D__i86__ -0 -S _start.c
+sed -e 's/^\.text//' -e 's/^\.data//' start.s > _start_.s
+as86 _start_.s -b start.bin -u- -w- -0 -j -O -l start.lst
+perl ${srcdir}/makesym.perl < start.lst > start.map
+dd conv=notrunc,sync if=start.bin of=$media/622clr.img bs=512 seek=2790
+
+echo
+echo building visor
+gcc -O0 -ffreestanding -Wall -masm=intel -c -g visor.c -o visor.o
+gcc -O0 -ffreestanding -Wall -masm=intel -c -g utility.c -o utility.o
+gcc -O0 -ffreestanding -Wall -masm=intel -c -g pmode.c -o pmode.o
+gcc -O0 -ffreestanding -Wall -masm=intel -c -g paging.c -o paging.o
+gcc -O0 -ffreestanding -masm=intel -c -g -Wa,-a,-ad -c visor.c utility.c pmode.c paging.c > visor.lst 2>/dev/null
+ld -Map=visor.map --cref -T visor.ld --oformat binary -o visor.bin visor.o utility.o pmode.o paging.o
+dd conv=notrunc if=visor.bin of=$media/622clr.img bs=512 seek=2800
+
+cp /home/yogi/src/media/* /chris -r
+

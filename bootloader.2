@@ -1,0 +1,173 @@
+//
+#define ASM_START #asm
+#define ASM_END #endasm
+
+ASM_START
+JMP _main
+USE16 386
+ASM_END
+
+unsigned short SectorsPerTrack = 0;
+unsigned short NumHeads = 0;
+int StartMainAdd = 0;
+char WelcomeMsg[] = "Welcome to VBWizard's Hypervisor!\n\r\0";
+char EndMsg[] = "Initialization complete, booting ...\n\r\0";
+void main ()
+{
+	ASM_START
+		PUSH #0X1000
+		POP SS
+		mov sp, #0xFFB0
+
+		mov ax,#0
+		push ax
+		pop ds
+		MOV SI, #_WelcomeMsg
+		ADD SI, #0x7c00
+		CALL print_string
+
+		PUSH #0x1000
+		PUSH #0x4000	//ES of 4000 means code will be read to 0x4000:0000 
+		POP ES
+		POP DS
+	
+	MOV AH,#0x08
+#ifdef __BOOT_FROM_HD__
+		MOV DL,#0x80
+#else
+		MOV DL,#0
+#endif
+		int 0x13
+		MOV _NumHeads, dh
+		MOV _SectorsPerTrack, cl	//Bits 0..5 only
+	
+	ASM_END
+	SectorsPerTrack = SectorsPerTrack & 0x3f;
+	NumHeads = NumHeads + 1;
+//	SectorsPerTrack = 62;	//18 for floppy
+//	NumHeads = 4;			//2 for floppy
+	ASM_START
+		MOV AX,#00
+#ifdef __BOOT_FROM_HD__
+		MOV DL,#0x80
+#else
+		MOV DL,#0
+#endif
+		INT #0x13
+
+		MOV EAX, #0x28000	//START program (floppy = 0xAE6) (hd=was F000)
+		CALL LBACHS
+		MOV CH, CL
+		MOV DH, BL
+		MOV CL, AL
+#ifdef __BOOT_FROM_HD__
+		MOV DL,#0x80
+#else
+		MOV DL,#0
+#endif
+		MOV AX,#0x0220	//READ 16 sectors
+		MOV BX,#0
+		INT #0x13		
+
+		MOV EAX, #0x28050	//LOAD HYPERVISOR - Visor	(floppy=0xAF0) (hd=was F010)
+		CALL LBACHS
+		MOV CH, CL
+		MOV DH, BL
+		MOV CL, AL
+#ifdef __BOOT_FROM_HD__
+		MOV DL,#0x80
+#else
+		MOV DL,#0
+#endif
+		MOV AX,#0x0250	//16 sectors
+		PUSH #0x5000
+		POP ES
+		MOV BX,0
+		INT #0x13
+
+		//Put original MBR at 6000:7C00 so when we turn on paging for the guest later and offset it by 0x50000 this will appear to be at 0000:7c00
+		MOV EAX,#0x28150	//Read DOS MBR sector (floppy = 0xb3f) (hd=was F050)
+		CALL LBACHS
+		MOV DH, BL
+		MOV BL, CH 			//need top 2 bits of cyl # from CH, about to stomp it
+		SHL BL,6
+		MOV CH, CL
+		MOV CL, AL
+		OR  CL, BL
+#ifdef __BOOT_FROM_HD__
+		MOV DL,#0x80
+#else
+		MOV DL,#0
+#endif
+		MOV AX,#0x0201	//1 sector
+		PUSH #0X6000	//ES OF 6000 is where we'll put the original boot sector so that it can be copied to 0000:7C00 later
+		POP	ES
+		MOV BX, #0x0
+		INT #0x13
+
+
+		mov ax,#0
+		push ax
+		pop ds
+		MOV SI, #_EndMsg
+		ADD SI, #0x7c00
+		CALL print_string
+
+		PUSH WORD #0X4000
+		PUSH WORD #0X4000
+		POP DS
+		POP ES
+
+EXECUTE_START_PGM:
+		JMP #0x4000:#0x0
+;; Compile using NASM compiler (Again look for it using a search engine)
+;; Input: eax - LBA value
+;; Output: ax - Sector
+;;	  bx - Head
+;;	  cx - Cylinder
+
+LBACHS:
+	PUSH dx			;; Save the value in dx
+	XOR dx,dx		;; Zero dx
+	MOVZX ebx, word _SectorsPerTrack	;; Move into place STP (LBA all ready in place)
+	
+	DIV ebx			;; Make the divide (ax/bx -> ax,dx)
+	inc dx			;; Add one to the remainder (sector value)
+	push dx			;; Save the sector value on the stack
+
+	XOR dx,dx		; Zero dx
+	MOV bx, _NumHeads	;; Move NumHeads into place (NumTracks all ready in place)
+	DIV bx			; Make the divide (ax/bx -> ax,dx)
+
+	MOV cx,ax		;; Move ax to cx (Cylinder)
+	MOV bx,dx		;; Move dx to bx (Head)
+	POP ax			;; Take the last value entered on the stack off.
+			;; It doesn''t need to go into the same register.
+			;; (Sector)
+	POP dx			;; Restore dx, just in case something important was
+			;; originally in there before running this.
+	RET			;; Return to the main function
+
+print_string:
+   lodsb        ; grab a byte from SI
+ 
+   or al, al  ; logical or AL by itself
+   jz .done   ; if the result is zero, get out
+ 
+   mov ah, #0x0E
+   mov bh, #0
+   mov bl,#0x07
+   int #0x10      ; otherwise, print out the character!
+ 
+   jmp print_string
+ 
+ .done:
+   ret
+    
+/* ORG 0x1FE
+ db 0x55
+ db 0xAA
+*/
+ASM_END
+}
+

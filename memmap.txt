@@ -1,0 +1,34 @@
+Original DOS =  0x67c00 -
+GuestPDir = 	0x85000		Relocates to 0x366000
+GuestPTable =   0x86000 (?)	Relocates to 0x367000
+VMCB = 		0x20000 - 	Relocates to visor data + 0x100000
+VMCB IOIO =	0x21000 -	Relocates to 0x601000
+GDT =		0x60000 - 	Relocates to 0x610000
+HostPDir =	0x70000 - 	Relocates to 0x611000
+HostPTable = 	0x71000 - 	Relocates to 0x612000
+IDT = 		0x65000 - 	Relocated to 0x620000
+NestedPDir = 	0x0A000 - 	Relocates to 0x621000
+NestedTable = 	0x0B000 - 	Relocates to 0x622000
+TSS = 				N/A (was Relocated to 0x680000
+HHSAVE_AREA			0x681000
+PL0 Stack = 			N/A (was relocated to 0x680000)
+GuestGDT = 	0x0F000 - 	not used
+LOG =				N/A (was 0x700000)
+Visor Code/Data	0x40000 - 	Relocates to 0x800000
+StackSegment =	0x10000 - 	Relocates to 0x800000 //Same as visor code/data, ESP keeps the two from coming together.
+
+
+Global Variables = 0x655000
+	0x650000	WORD	IDT_OFFSET
+	0x650002	WORD	IDT_SEGMENT
+	0x651000	BYTE[]	BIOS_SEGMENT (131072/0x20000 bytes)
+	0x670FFF	BIOS_SEGMENT_ENDS
+	0x671000	BYTE[]	VIDEO_SEGMENT (65536/0x10000 bytes)
+	0x680FFF	VIDEO_SEGMENT_ENDS
+
+
+VisorCodeBase @ 0
+VisorStackBase @ 0 + ESP of (HostSIze - VisorStackBase - 1000) puts top of stack at the top of memory - 1000
+VisorVMCBOffset @ VisorCodeBase + 0x10000, size = 2048
+VisorVMCBIoioOffset = VisorVMCBOffset + sizeof(vmcb) (ioio is 12k or 0x3000)
+next = VisorCodeBase + VisorVMCBIoioOffset + 0x3000

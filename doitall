@@ -1,0 +1,7 @@
+cd ~/src/vmmeow
+./build -w
+cd $visor
+make clean && make && ./post-make
+cd $injector
+./goi
+

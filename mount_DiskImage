@@ -1,0 +1,2 @@
+losetup -o 32256 /dev/loop0 ~/DOS622_hd.raw
+mount /dev/loop /mnt

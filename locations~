@@ -1,0 +1,19 @@
+My MBR = 512 bytes
+DOS MBR = 512 bytes
+Start.bin = 4703 (5120) bytes
+visor.bin = 19553 (19968) bytes
+total = 25697 bytes
+
+
+space at beg of disk = 32768
+my mbr = sector 1			- 0 - 511
+DOS mbr = sector 2 	- 512 - 1023
+buffer between orig mbr & start - 1024 - 1535 (512 bytes, 1 sector)
+start.bin = sector 3		- 1536 - 6655 + 2 sectors = end @ 7679 (1441 bytes slack space)
+visor.bin = sector 15		- 7680 - 27648 + 4 sectors = end @ 29695 (10142 bytes slack space)
+free space = sector 52		- 29696 - 32768 = 3072 bytes (6 sectors) free space 
+
+MBR=0
+DOS MBR = 1
+START = 3
+VISOR = 15

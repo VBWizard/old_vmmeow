@@ -1,0 +1,655 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+lTempDWord          0x4               visor.o
+HostRegisterEDXi    0x4               visor.o
+HostRegisterEBXi    0x4               visor.o
+GuestRegisterESIi   0x4               visor.o
+HostRegisterGSi     0x4               visor.o
+GuestRegisterEDXi   0x4               visor.o
+scancode            0x1               visor.o
+GuestRegisterEBXi   0x4               visor.o
+GuestRegisters      0x38              visor.o
+GuestRegisterFSi    0x4               visor.o
+tss                 0x4               visor.o
+GuestRegisterGSi    0x4               visor.o
+Boot_Heads          0x4               visor.o
+Boot_SPT            0x4               visor.o
+lTempByte           0x1               visor.o
+Combined            0x4               logging.o
+HostRegisterECXi    0x4               visor.o
+HostRegisterESIi    0x4               visor.o
+HostRegisterEBPi    0x4               visor.o
+Boot_Cylinders      0x4               visor.o
+HostRegisterEDIi    0x4               visor.o
+GuestRegisterEBPi   0x4               visor.o
+lTheChar            0x1               logging.o
+HostRegisterFSi     0x4               visor.o
+GuestRegisterEDIi   0x4               visor.o
+GuestRegisterECXi   0x4               visor.o
+HostRegisters       0x38              visor.o
+lTempDWord2         0x4               visor.o
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x35 visor.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 visor.o
+ .comment       0x0000000000000000       0x35 utility.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 utility.o
+ .comment       0x0000000000000000       0x35 paging.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 paging.o
+ .comment       0x0000000000000000       0x35 guest.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 guest.o
+ .comment       0x0000000000000000       0x35 pmode.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 pmode.o
+ .comment       0x0000000000000000       0x35 screen.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 screen.o
+ .comment       0x0000000000000000       0x35 logging.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 logging.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000000000                . = 0x0
+
+.text           0x0000000000000000     0x388b load address 0x0000000000000200
+                0x0000000000000000                _text = .
+ *(.text)
+ .text          0x0000000000000000     0x115d visor.o
+                0x0000000000000000                main
+                0x0000000000000260                MoveStuff
+                0x0000000000000407                VisorLoop
+                0x0000000000000c4b                CopySegment0
+                0x0000000000000c9a                ChangeMappingTableEntries
+                0x0000000000000d16                HostExceptionHandler
+                0x0000000000000d1c                host_isr_handler
+                0x0000000000001001                timer_handler
+                0x0000000000001018                kbd_handler
+                0x000000000000102d                call_gate_proc
+                0x0000000000001034                task
+                0x000000000000103a                Wait
+                0x0000000000001085                InfiniteLoop
+ .text          0x000000000000115d      0x818 utility.o
+                0x000000000000115d                VerifySVM
+                0x0000000000001167                Print
+                0x00000000000011e8                GetVMCBB
+                0x0000000000001206                GetVMCBW
+                0x0000000000001224                GetVMCBD
+                0x0000000000001242                GetMemB
+                0x0000000000001289                GetMemW
+                0x00000000000012d4                GetMemD
+                0x000000000000131d                SetVMCBB
+                0x0000000000001348                SetVMCBW
+                0x0000000000001374                SetVMCBD
+                0x0000000000001396                SetMemB
+                0x00000000000013df                SetMemW
+                0x000000000000142b                SetMemD
+                0x000000000000146d                IncrementGuestIP
+                0x00000000000014a8                IncrementGuestnRIP
+                0x00000000000014e3                GetGuestPhysicalAddress
+                0x0000000000001538                TranslateGuestPhysicalAddress
+                0x000000000000158a                CopyData
+                0x00000000000015b4                outb
+                0x00000000000015d3                outw
+                0x00000000000015f4                outd
+                0x000000000000160c                inb
+                0x0000000000001629                inw
+                0x0000000000001648                ind
+                0x0000000000001664                Itoa
+                0x0000000000001744                bitarray_GetBit
+                0x0000000000001789                bitarray_UpdateBit
+                0x000000000000180d                lbaToCHS
+                0x000000000000185b                chsToLBA
+                0x000000000000187c                Sleep
+                0x00000000000018bb                setup_pit_channel_0
+                0x000000000000190f                setHostSegReg
+ .text          0x0000000000001975       0x2e paging.o
+                0x0000000000001975                UpdatePDEntry
+ .text          0x00000000000019a3     0x13d9 guest.o
+                0x00000000000019a3                SetupGuestPages
+                0x0000000000001a63                HandleRealModeSWInterrupt
+                0x0000000000001cc5                PushCSIPFlagsOntoGuestStackReal16
+                0x0000000000001da7                PopCSIPFlagsOffGuestStackReal16
+                0x0000000000001ed7                UpdateGuestForSoftwareInterrupt
+                0x0000000000001fc0                GuestInt13Handler
+                0x0000000000002191                HandleInterrutpReturn
+                0x000000000000219f                GetCSIp
+                0x00000000000021cf                GetGuestMODRegGenRegValue
+                0x00000000000023d1                SetGuestMODRegGenRegValue
+                0x000000000000269e                HandleCR0Write
+                0x00000000000026d0                HandleCR3Write
+                0x0000000000002731                HandleCR0Read
+                0x0000000000002795                HandleCR3Read
+                0x00000000000027e7                HandleGuestIO
+                0x0000000000002b11                GuestExceptionHandler
+                0x0000000000002d70                HandleGuestPagingException
+                0x0000000000002d76                guest_real_mode_isr_handler
+ .text          0x0000000000002d7c      0x253 isr_wrapper.o
+                0x0000000000002d7c                _isr_common
+                0x0000000000002df4                _isr_00_wrapper
+                0x0000000000002dfc                _isr_01_wrapper
+                0x0000000000002e07                _isr_02_wrapper
+                0x0000000000002e12                _isr_03_wrapper
+                0x0000000000002e1d                _isr_04_wrapper
+                0x0000000000002e28                _isr_05_wrapper
+                0x0000000000002e33                _isr_06_wrapper
+                0x0000000000002e3e                _isr_07_wrapper
+                0x0000000000002e49                _isr_08_wrapper
+                0x0000000000002e67                _isr_09_wrapper
+                0x0000000000002e7b                _isr_0A_wrapper
+                0x0000000000002e86                _isr_0B_wrapper
+                0x0000000000002e91                _isr_0C_wrapper
+                0x0000000000002e9c                _isr_0D_wrapper
+                0x0000000000002ea7                _isr_0E_wrapper
+                0x0000000000002eb2                _isr_0F_wrapper
+                0x0000000000002ebd                _isr_10_wrapper
+                0x0000000000002ec8                _isr_11_wrapper
+                0x0000000000002ed3                _isr_12_wrapper
+                0x0000000000002ede                _isr_13_wrapper
+                0x0000000000002ee9                _isr_14_wrapper
+                0x0000000000002ef4                _isr_15_wrapper
+                0x0000000000002eff                _isr_16_wrapper
+                0x0000000000002f0a                _isr_17_wrapper
+                0x0000000000002f15                _isr_18_wrapper
+                0x0000000000002f20                _isr_19_wrapper
+                0x0000000000002f2b                _isr_1A_wrapper
+                0x0000000000002f36                _isr_1B_wrapper
+                0x0000000000002f41                _isr_1C_wrapper
+                0x0000000000002f4c                _isr_1D_wrapper
+                0x0000000000002f57                _isr_1E_wrapper
+                0x0000000000002f62                _isr_1F_wrapper
+                0x0000000000002f6d                _isr_20_wrapper
+                0x0000000000002f81                _isr_21_wrapper
+                0x0000000000002f95                _call_gate_wrapper
+                0x0000000000002fc1                _exception_number
+                0x0000000000002fc3                _ltr
+ .text          0x0000000000002fcf      0x514 pmode.o
+                0x0000000000002fcf                setup_GDT32_entry_gcc
+                0x000000000000304c                ReloadGDT
+                0x0000000000003060                setup_IDT_entry
+                0x00000000000030b9                SetupHostIDT
+ .text          0x00000000000034e3      0x2a1 screen.o
+                0x000000000000359a                monitor_put
+                0x00000000000036aa                monitor_clear
+                0x0000000000003719                monitor_write
+                0x0000000000003763                monitor_write_at
+ .text          0x0000000000003784      0x107 logging.o
+                0x0000000000003784                log_base_write
+                0x0000000000003859                log_writeln
+                0x0000000000003872                log_write
+                0x000000000000388b                _text_end = .
+
+.eh_frame       0x000000000000388c      0xb30 load address 0x0000000000003a8c
+ .eh_frame      0x000000000000388c      0x1d8 visor.o
+ .eh_frame      0x0000000000003a64      0x478 utility.o
+ .eh_frame      0x0000000000003edc       0x38 paging.o
+ .eh_frame      0x0000000000003f14      0x2a0 guest.o
+ .eh_frame      0x00000000000041b4       0xa4 pmode.o
+ .eh_frame      0x0000000000004258       0xe8 screen.o
+ .eh_frame      0x0000000000004340       0x7c logging.o
+
+.data           0x00000000000043c0      0x641 load address 0x00000000000045c0
+                0x00000000000043c0                _data = .
+ *(.bss)
+ .bss           0x00000000000043c0       0x54 visor.o
+                0x00000000000043c0                VMCB
+                0x00000000000043c4                VMCBB
+                0x00000000000043c8                GuestIOPermissionMap
+                0x00000000000043cc                lTempVal
+                0x00000000000043d0                lTempAddr
+                0x00000000000043d4                gDebugString
+                0x00000000000043d8                gDebugString2
+                0x00000000000043dc                gDebugString3
+                0x00000000000043e0                gDebugString4
+                0x00000000000043e4                cnt
+                0x00000000000043e8                Value
+                0x00000000000043ec                GuestSavedCR0
+                0x00000000000043f0                idtPtr
+                0x00000000000043f4                _exc_CS
+                0x00000000000043f6                _exc_IP
+                0x00000000000043f8                gInterceptCount
+                0x00000000000043fc                IntNo
+                0x0000000000004400                ticks
+                0x0000000000004408                jifs
+                0x0000000000004410                gInterceptCode
+ .bss           0x0000000000004414        0x8 utility.o
+                0x0000000000004414                ScreenY
+ .bss           0x000000000000441c        0x0 paging.o
+ .bss           0x000000000000441c       0x20 guest.o
+                0x000000000000441c                GuestInt13ReturnAddress
+                0x0000000000004420                GuestInt13IntDetailsPtr
+                0x0000000000004424                GuestInt13BufferAddress
+                0x0000000000004428                GuestInt13BufferSize
+                0x000000000000442c                IntDetailsPtr
+                0x0000000000004430                GuestInInt13
+                0x0000000000004431                GuestPModeFlag
+                0x0000000000004432                GuestPagingFlag
+ .bss           0x000000000000443c        0x0 isr_wrapper.o
+ .bss           0x000000000000443c        0x8 pmode.o
+                0x000000000000443c                GDT_Save
+                0x0000000000004440                idt
+ .bss           0x0000000000004444        0xc screen.o
+                0x0000000000004444                cursorLocation
+                0x0000000000004448                cursor_x
+                0x000000000000444c                cursor_y
+ .bss           0x0000000000004450        0x4 logging.o
+                0x0000000000004450                LogCurrentPtr
+ *(.bss*)
+ *(.data)
+ *fill*         0x0000000000004454        0xc 
+ .data          0x0000000000004460       0x54 visor.o
+                0x0000000000004460                Our_Cylinders
+                0x0000000000004464                Our_SPT
+                0x0000000000004468                Our_Heads
+                0x0000000000004474                VMCBFinalAddress
+                0x0000000000004478                task_stack
+                0x000000000000447c                pl0_stack
+                0x0000000000004480                HostExceptMsg
+ *fill*         0x00000000000044b4        0xc 
+ .data          0x00000000000044c0       0x25 utility.o
+ .data          0x00000000000044e5        0x0 paging.o
+ *fill*         0x00000000000044e5       0x1b 
+ .data          0x0000000000004500       0x78 guest.o
+                0x0000000000004500                IntDetails
+                0x0000000000004520                GuestExceptMsg
+                0x0000000000004570                GuestRequestedCR3
+                0x0000000000004574                GuestRequestedCR0
+ .data          0x0000000000004578        0x0 isr_wrapper.o
+ .data          0x0000000000004578        0x0 pmode.o
+ .data          0x0000000000004578        0x0 screen.o
+ .data          0x0000000000004578        0x4 logging.o
+                0x0000000000004578                theLog
+ *(.rodata*)
+ .rodata        0x000000000000457c      0x2b8 visor.o
+ .rodata        0x0000000000004834       0x18 utility.o
+ .rodata        0x000000000000484c       0xc8 guest.o
+ *(COMMON)
+ *fill*         0x0000000000004914        0xc 
+ COMMON         0x0000000000004920       0xdc visor.o
+                0x0000000000004920                lTempDWord
+                0x0000000000004924                HostRegisterEDXi
+                0x0000000000004928                HostRegisterEBXi
+                0x000000000000492c                GuestRegisterESIi
+                0x0000000000004930                HostRegisterGSi
+                0x0000000000004934                GuestRegisterEDXi
+                0x0000000000004938                scancode
+                0x000000000000493c                GuestRegisterEBXi
+                0x0000000000004940                GuestRegisters
+                0x0000000000004978                GuestRegisterFSi
+                0x000000000000497c                tss
+                0x0000000000004980                GuestRegisterGSi
+                0x0000000000004984                Boot_Heads
+                0x0000000000004988                Boot_SPT
+                0x000000000000498c                lTempByte
+                0x0000000000004990                HostRegisterECXi
+                0x0000000000004994                HostRegisterESIi
+                0x0000000000004998                HostRegisterEBPi
+                0x000000000000499c                Boot_Cylinders
+                0x00000000000049a0                HostRegisterEDIi
+                0x00000000000049a4                GuestRegisterEBPi
+                0x00000000000049a8                HostRegisterFSi
+                0x00000000000049ac                GuestRegisterEDIi
+                0x00000000000049b0                GuestRegisterECXi
+                0x00000000000049c0                HostRegisters
+                0x00000000000049f8                lTempDWord2
+ COMMON         0x00000000000049fc        0x5 logging.o
+                0x00000000000049fc                Combined
+                0x0000000000004a00                lTheChar
+                0x0000000000004a01                _data_end = .
+
+/DISCARD/
+ *(.note*)
+ *(.iplt*)
+ *(.igot*)
+ *(.rel*)
+ *(.comment)
+LOAD visor.o
+LOAD utility.o
+LOAD paging.o
+LOAD guest.o
+LOAD isr_wrapper.o
+LOAD pmode.o
+LOAD screen.o
+LOAD logging.o
+OUTPUT(visor.bin binary)
+
+.debug_info     0x0000000000000000     0x2148
+ .debug_info    0x0000000000000000      0x9f1 visor.o
+ .debug_info    0x00000000000009f1      0x9fb utility.o
+ .debug_info    0x00000000000013ec       0xba paging.o
+ .debug_info    0x00000000000014a6      0x6e5 guest.o
+ .debug_info    0x0000000000001b8b      0x261 pmode.o
+ .debug_info    0x0000000000001dec      0x223 screen.o
+ .debug_info    0x000000000000200f      0x139 logging.o
+
+.debug_abbrev   0x0000000000000000      0x914
+ .debug_abbrev  0x0000000000000000      0x1f4 visor.o
+ .debug_abbrev  0x00000000000001f4      0x1ef utility.o
+ .debug_abbrev  0x00000000000003e3       0x69 paging.o
+ .debug_abbrev  0x000000000000044c      0x239 guest.o
+ .debug_abbrev  0x0000000000000685       0xf3 pmode.o
+ .debug_abbrev  0x0000000000000778      0x113 screen.o
+ .debug_abbrev  0x000000000000088b       0x89 logging.o
+
+.debug_aranges  0x0000000000000000       0xe0
+ .debug_aranges
+                0x0000000000000000       0x20 visor.o
+ .debug_aranges
+                0x0000000000000020       0x20 utility.o
+ .debug_aranges
+                0x0000000000000040       0x20 paging.o
+ .debug_aranges
+                0x0000000000000060       0x20 guest.o
+ .debug_aranges
+                0x0000000000000080       0x20 pmode.o
+ .debug_aranges
+                0x00000000000000a0       0x20 screen.o
+ .debug_aranges
+                0x00000000000000c0       0x20 logging.o
+
+.debug_ranges   0x0000000000000000       0x18
+ .debug_ranges  0x0000000000000000       0x18 visor.o
+
+.debug_line     0x0000000000000000      0x964
+ .debug_line    0x0000000000000000      0x309 visor.o
+ .debug_line    0x0000000000000309      0x161 utility.o
+ .debug_line    0x000000000000046a       0x44 paging.o
+ .debug_line    0x00000000000004ae      0x2df guest.o
+ .debug_line    0x000000000000078d       0xb1 pmode.o
+ .debug_line    0x000000000000083e       0xc5 screen.o
+ .debug_line    0x0000000000000903       0x61 logging.o
+
+.debug_str      0x0000000000000000     0x142f
+ .debug_str     0x0000000000000000      0x5b2 visor.o
+ .debug_str     0x00000000000005b2      0x37e utility.o
+ .debug_str     0x0000000000000930      0x10f paging.o
+ .debug_str     0x0000000000000a3f      0x566 guest.o
+ .debug_str     0x0000000000000fa5      0x1b3 pmode.o
+ .debug_str     0x0000000000001158      0x196 screen.o
+ .debug_str     0x00000000000012ee      0x141 logging.o
+
+Cross Reference Table
+
+Symbol                                            File
+Boot_Cylinders                                    visor.o
+Boot_Heads                                        visor.o
+Boot_SPT                                          visor.o
+ChangeMappingTableEntries                         visor.o
+Combined                                          logging.o
+CopyData                                          utility.o
+                                                  visor.o
+CopySegment0                                      visor.o
+GDT_Save                                          pmode.o
+GetCSIp                                           guest.o
+GetGuestMODRegGenRegValue                         guest.o
+GetGuestPhysicalAddress                           utility.o
+GetMemB                                           utility.o
+                                                  guest.o
+GetMemD                                           utility.o
+GetMemW                                           utility.o
+                                                  guest.o
+GetVMCBB                                          utility.o
+                                                  guest.o
+GetVMCBD                                          utility.o
+                                                  guest.o
+                                                  visor.o
+GetVMCBW                                          utility.o
+                                                  guest.o
+                                                  visor.o
+GuestExceptMsg                                    guest.o
+GuestExceptionHandler                             guest.o
+GuestIOPermissionMap                              visor.o
+GuestInInt13                                      guest.o
+GuestInt13BufferAddress                           guest.o
+GuestInt13BufferSize                              guest.o
+GuestInt13Handler                                 guest.o
+GuestInt13IntDetailsPtr                           guest.o
+GuestInt13ReturnAddress                           guest.o
+GuestPModeFlag                                    guest.o
+GuestPagingFlag                                   guest.o
+GuestRegisterEBPi                                 visor.o
+GuestRegisterEBXi                                 visor.o
+GuestRegisterECXi                                 visor.o
+GuestRegisterEDIi                                 visor.o
+GuestRegisterEDXi                                 visor.o
+GuestRegisterESIi                                 visor.o
+GuestRegisterFSi                                  visor.o
+GuestRegisterGSi                                  visor.o
+GuestRegisters                                    visor.o
+                                                  guest.o
+GuestRequestedCR0                                 guest.o
+GuestRequestedCR3                                 guest.o
+GuestSavedCR0                                     visor.o
+HandleCR0Read                                     guest.o
+                                                  visor.o
+HandleCR0Write                                    guest.o
+                                                  visor.o
+HandleCR3Read                                     guest.o
+                                                  visor.o
+HandleCR3Write                                    guest.o
+                                                  visor.o
+HandleGuestIO                                     guest.o
+                                                  visor.o
+HandleGuestPagingException                        guest.o
+                                                  visor.o
+HandleInterrutpReturn                             guest.o
+                                                  visor.o
+HandleRealModeSWInterrupt                         guest.o
+                                                  visor.o
+HostExceptMsg                                     visor.o
+HostExceptionHandler                              visor.o
+HostRegisterEBPi                                  visor.o
+HostRegisterEBXi                                  visor.o
+HostRegisterECXi                                  visor.o
+HostRegisterEDIi                                  visor.o
+HostRegisterEDXi                                  visor.o
+HostRegisterESIi                                  visor.o
+HostRegisterFSi                                   visor.o
+HostRegisterGSi                                   visor.o
+HostRegisters                                     visor.o
+IncrementGuestIP                                  utility.o
+                                                  guest.o
+IncrementGuestnRIP                                utility.o
+InfiniteLoop                                      visor.o
+IntDetails                                        guest.o
+IntDetailsPtr                                     guest.o
+IntNo                                             visor.o
+Itoa                                              utility.o
+                                                  visor.o
+LogCurrentPtr                                     logging.o
+MoveStuff                                         visor.o
+Our_Cylinders                                     visor.o
+Our_Heads                                         visor.o
+Our_SPT                                           visor.o
+PopCSIPFlagsOffGuestStackReal16                   guest.o
+Print                                             utility.o
+                                                  guest.o
+                                                  visor.o
+PushCSIPFlagsOntoGuestStackReal16                 guest.o
+ReloadGDT                                         pmode.o
+ScreenY                                           utility.o
+SetGuestMODRegGenRegValue                         guest.o
+SetMemB                                           utility.o
+                                                  logging.o
+SetMemD                                           utility.o
+SetMemW                                           utility.o
+                                                  guest.o
+SetVMCBB                                          utility.o
+                                                  guest.o
+SetVMCBD                                          utility.o
+                                                  guest.o
+                                                  visor.o
+SetVMCBW                                          utility.o
+                                                  guest.o
+                                                  visor.o
+SetupGuestPages                                   guest.o
+                                                  visor.o
+SetupHostIDT                                      pmode.o
+                                                  visor.o
+Sleep                                             utility.o
+TranslateGuestPhysicalAddress                     utility.o
+UpdateGuestForSoftwareInterrupt                   guest.o
+UpdatePDEntry                                     paging.o
+                                                  visor.o
+VMCB                                              visor.o
+VMCBB                                             visor.o
+VMCBFinalAddress                                  visor.o
+Value                                             visor.o
+VerifySVM                                         utility.o
+                                                  visor.o
+VisorLoop                                         visor.o
+Wait                                              visor.o
+_call_gate_wrapper                                isr_wrapper.o
+_exc_CS                                           visor.o
+                                                  isr_wrapper.o
+_exc_IP                                           visor.o
+                                                  isr_wrapper.o
+_exception_number                                 isr_wrapper.o
+                                                  visor.o
+_isr_00_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_01_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_02_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_03_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_04_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_05_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_06_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_07_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_08_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_09_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_0A_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_0B_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_0C_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_0D_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_0E_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_0F_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_10_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_11_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_12_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_13_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_14_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_15_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_16_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_17_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_18_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_19_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_1A_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_1B_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_1C_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_1D_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_1E_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_1F_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_20_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_21_wrapper                                   isr_wrapper.o
+                                                  pmode.o
+_isr_common                                       isr_wrapper.o
+_ltr                                              isr_wrapper.o
+bitarray_GetBit                                   utility.o
+bitarray_UpdateBit                                utility.o
+call_gate_proc                                    visor.o
+                                                  isr_wrapper.o
+chsToLBA                                          utility.o
+cnt                                               visor.o
+cursorLocation                                    screen.o
+cursor_x                                          screen.o
+cursor_y                                          screen.o
+gDebugString                                      visor.o
+gDebugString2                                     visor.o
+gDebugString3                                     visor.o
+gDebugString4                                     visor.o
+gInterceptCode                                    visor.o
+gInterceptCount                                   visor.o
+guest_real_mode_isr_handler                       guest.o
+host_isr_handler                                  visor.o
+                                                  isr_wrapper.o
+idt                                               pmode.o
+idtPtr                                            visor.o
+inb                                               utility.o
+                                                  guest.o
+ind                                               utility.o
+inw                                               utility.o
+jifs                                              visor.o
+kbd_handler                                       visor.o
+                                                  isr_wrapper.o
+lTempAddr                                         visor.o
+lTempByte                                         visor.o
+lTempDWord                                        visor.o
+lTempDWord2                                       visor.o
+lTempVal                                          visor.o
+lTheChar                                          logging.o
+lbaToCHS                                          utility.o
+log_base_write                                    logging.o
+log_write                                         logging.o
+log_writeln                                       logging.o
+main                                              visor.o
+monitor_clear                                     screen.o
+                                                  visor.o
+monitor_put                                       screen.o
+monitor_write                                     screen.o
+                                                  visor.o
+monitor_write_at                                  screen.o
+                                                  visor.o
+outb                                              utility.o
+                                                  guest.o
+outd                                              utility.o
+outw                                              utility.o
+pl0_stack                                         visor.o
+scancode                                          visor.o
+setHostSegReg                                     utility.o
+                                                  visor.o
+setup_GDT32_entry_gcc                             pmode.o
+                                                  visor.o
+setup_IDT_entry                                   pmode.o
+setup_pit_channel_0                               utility.o
+                                                  visor.o
+task                                              visor.o
+task_stack                                        visor.o
+theLog                                            logging.o
+ticks                                             visor.o
+timer_handler                                     visor.o
+                                                  isr_wrapper.o
+tss                                               visor.o

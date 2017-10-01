@@ -1,0 +1,2 @@
+sudo fsarchiver -v restfs ~/gentoo_root.part.fsa id=0,dest=/dev/sda1
+

@@ -1,0 +1,5 @@
+000f008c LBACHS
+000f0004 _NumHeads
+000f0002 _SectorsPerTrack
+000f0006 _StartMainAdd
+000f0008 _main

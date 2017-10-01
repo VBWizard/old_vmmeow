@@ -1,0 +1,4 @@
+Next at t=0
+(0) [0x0000fffffff0] f000:fff0 (unk. ctxt): jmpf 0xf000:e05b          ; ea5be000f0
+c
+(0).[3754680000] [0x0000100059a0] 0050:00000000000059a0 (unk. ctxt): cmp byte ptr ss:[ebp-20], 0x09 ; 807dec09
