@@ -27,13 +27,13 @@ optramimage3: file=none
 optramimage4: file=none
 pci: enabled=0
 vga: extension=vbe, update_freq=5, realtime=1
-cpu: count=1, ips=24000000, model=phenom_8650_toliman, reset_on_triple_fault=0, cpuid_limit_winnt=0, ignore_bad_msrs=1, mwait_is_nop=0, msrs="/home/yogi/src/vmmeow/vmmeow.msr"
+cpu: count=1, ips=48000000, model=phenom_8650_toliman, reset_on_triple_fault=0, cpuid_limit_winnt=0, ignore_bad_msrs=1, mwait_is_nop=0, msrs="/home/yogi/src/vmmeow/vmmeow.msr"
 print_timestamps: enabled=0
 debugger_log: bochsd.log
 magic_break: enabled=1
 port_e9_hack: enabled=0
 private_colormap: enabled=0
-clock: sync=realtime, time0=local, rtc_sync=1
+clock: sync=slowdown, time0=local, rtc_sync=0
 # no cmosimage
 # no loader
 log: bochs.log
@@ -43,7 +43,7 @@ info: action=report
 error: action=report
 panic: action=report
 keyboard: type=mf, serial_delay=250, paste_delay=100000, user_shortcut=none
-mouse: type=ps2, enabled=0, toggle=ctrl+mbutton
+mouse: type=ps2, enabled=0, toggle=ctrl+alt
 speaker: enabled=1, mode=system
 parport1: enabled=1, file=none
 parport2: enabled=0

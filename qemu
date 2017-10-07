@@ -1,8 +1,14 @@
-qemu-system-i386 							\
-	-m 1536								\
--drive file=/dev/disk/by-id/usb-SanDisk_Cruzer_20042103311D97B0109A-0:0 -cpu host,svm -enable-kvm \
-	-serial file:"qemu_port.log"					\
-	-d int,cpu_reset,pcall,guest_errors                        		\
+qemu-system-i386 							            \
+-m 1536                                                         		    \
+        -hda /dev/disk/by-id/usb-SanDisk_Cruzer_20042103311D97B0109A-0:0     \
+	--enable-kvm      \
+        -cpu qemu32,+svm,-vmx  \
+	-hdb /home/yogi/src/vmmeow/diskimage.img   \
+        -serial file:"/home/yogi/src/vmmeow/qemu-port.log"                                    \
+        -d int,cpu_reset,pcall,guest_errors                                 \
 	$@ 
-#	--enable-kvm
 
+#	-enable-kvm      \
+#	--serial stdio
+#,+svm,-vmx -enable-kvm                                                      f
+#,cpu_reset,pcall,guest_errors,out_asm
